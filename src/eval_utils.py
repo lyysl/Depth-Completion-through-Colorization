@@ -118,8 +118,6 @@ def evaluate(output_depths,
         output_depth = np.squeeze(output_depths[idx, ...])
         ground_truth = np.squeeze(ground_truths[idx][..., 0])
         validity_map = np.squeeze(ground_truths[idx][..., 1])
-        # print(np.amax(output_depth))
-        # print(np.amax(ground_truth))
 
         # Create mask for evaluation
         validity_mask = np.where(validity_map > 0, 1, 0)
@@ -127,21 +125,11 @@ def evaluate(output_depths,
             ground_truth > min_evaluate_depth,
             ground_truth < max_evaluate_depth)
         mask = np.where(np.logical_and(validity_mask, min_max_mask) > 0)
-        # mask = np.where(validity_mask == 1)
 
 
         # Apply mask to output depth and ground truth
-        # print(output_depth.shape)
         output_depth = output_depth[mask]
         ground_truth = ground_truth[mask]
-        error = np.abs(output_depth - ground_truth)
-        # print("total number of pixels: ", error.shape)
-        # # print(np.amin(np.abs(output_depth - ground_truth)))
-        # print("number of values > 1 meter: ",np.sum(error>1))
-        # print("number of values < 1 meter: ",np.sum(error<1))
-        # print(output_depth.shape)
-        # print(np.amax(output_depth))
-        # print(np.amax(ground_truth))
 
         if normalise == 1:
             # normalise the values by dividing the max pixel value

@@ -21,7 +21,6 @@ In the Robotics and Automation Letters (RA-L) 2021 and Proceedings of Internatio
 '''
 import os, time, argparse
 import numpy as np
-
 import data_utils, eval_utils
 from log_utils import log
 
@@ -105,18 +104,12 @@ if ground_truth_available:
         ground_truths.append(ground_truth)
     ground_truths = np.array(ground_truths)
 
-    # ground_truth_paths = data_utils.pad_batch(ground_truth_paths, args.n_batch)
-
     print('Completed loading {} groundtruth depth maps'.format(n_sample))
 
-
-# ground_truths = np.array(ground_truths)
-# print(ground_truths)
 
 '''
 evaluation
 '''
-time_start = time.time()
 
 output_depths = []
 # Load the results from different methods
@@ -127,15 +120,6 @@ for idx in range(n_sample):
     output_depths.append(output_depth)
 output_depths = np.array(output_depths)
 
-# output_depth_paths = data_utils.pad_batch(output_depth_paths, args.n_batch)
-
-# Measure run time
-time_elapse = time.time() - time_start
-time_elapse_per_sample = time_elapse / float(output_depths.shape[0])
-
-log('Total time: {:.2f} min  Average time per sample: {:.2f} ms'.format(
-    time_elapse / 60.0, time_elapse_per_sample * 1000.0),
-    log_path)
 
 if ground_truth_available:
     # Run evaluation metrics

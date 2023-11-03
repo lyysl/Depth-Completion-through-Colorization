@@ -22,11 +22,10 @@ In the Robotics and Automation Letters (RA-L) 2021 and Proceedings of Internatio
 import os, time, argparse
 import numpy as np
 import data_utils, eval_utils
-from log_utils import log
+
 
 def get_imlist(path):
     return [os.path.join(path, f) for f in os.listdir(path) if f.endswith('.png')]
-
 
 parser = argparse.ArgumentParser()
 
@@ -61,7 +60,6 @@ parser.add_argument('--normalise',
 
 args = parser.parse_args()
 
-
 '''
 Read output depth paths and load ground truth (if available)
 '''
@@ -92,7 +90,6 @@ if ground_truth_available:
 
     # Load ground truth
     for idx in range(n_sample):
-
         print('Loading {}/{} groundtruth depth maps'.format(idx + 1, n_sample), end='\r')
 
         ground_truth, validity_map = \
@@ -106,20 +103,16 @@ if ground_truth_available:
 
     print('Completed loading {} groundtruth depth maps'.format(n_sample))
 
-
 '''
 evaluation
 '''
-
 output_depths = []
 # Load the results from different methods
 for idx in range(n_sample):
-
     print('Loading {}/{} output depth maps'.format(idx + 1, n_sample), end='\r')
     output_depth = data_utils.load_depth(output_depth_paths[idx])
     output_depths.append(output_depth)
 output_depths = np.array(output_depths)
-
 
 if ground_truth_available:
     # Run evaluation metrics

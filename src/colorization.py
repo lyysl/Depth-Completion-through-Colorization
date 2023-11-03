@@ -7,6 +7,7 @@ import time
 import argparse
 from log_utils import log
 
+
 parser = argparse.ArgumentParser()
 
 parser.add_argument('--input_path',

@@ -4,7 +4,7 @@ The algorithm has been tested on WSL2 Ubuntu 20.04 using Python 3.7.
 
 To get necessary dependencies, you may use
 ```
-pip install numpy scipy pillow gdown
+pip install numpy scipy pillow gdown numba
 ```
 
 To setup the dataset, you may use

@@ -1,6 +1,5 @@
 #!/bin/bash
-# a bash script for depth completion from colorization
-# bash ./bash/colorization_ssl.sh
+# a bash script for depth completion through colorization
 
 # change your parameters
 sensor=livox_all # cepton, livox_all

@@ -18,6 +18,4 @@ For depth completion, change the parameters in ./bash/colorization_ssl.sh, you m
 bash ./bash/colorization_ssl.sh
 ```
 
-The algorithm is adapted from [[fill_depth_colorization.py]](https://gist.github.com/ialhashim/be6235489a9c43c6d240e8331836586a)
-
-The evaluation is adapted from [[learning-topology-synthetic-data]](https://github.com/alexklwong/learning-topology-synthetic-data)
+The code for the algorithm and evaluation is adapted from open source github repository.

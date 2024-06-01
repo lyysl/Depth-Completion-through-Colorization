@@ -8,15 +8,17 @@ use_gpu=True # True, False
 winRad=1 # only neighbor of radius 1 is used for guidance
 kernel=cross # only cross is used for guidance
 
-input_path='./data/data_depth_selection/depth_selection/val_selection_cropped/velodyne_raw'
-ground_truth_path='./data/data_depth_selection/depth_selection/val_selection_cropped/groundtruth_depth'
+input_path='./data/kitti/data_depth_selection/depth_selection/val_selection_cropped/velodyne_raw'
+intrinsics_path='./data/kitti/data_depth_selection/depth_selection/val_selection_cropped/intrinsics'
 guidance_path='./results/kitti/'${data}'/'${kernel}
 output_path='./results/kitti_guidance/'${data}'/'${kernel}
+ground_truth_path='./data/kitti/data_depth_selection/depth_selection/val_selection_cropped/groundtruth_depth'
 eval_output_path='./eval_results/kitti_guidance/'${data}'/'${kernel}
 
 echo "generating results for colorization method..."
 python3 ./src/colorization_depth_guidance.py \
 --input_path $input_path \
+--intrinsics_path $intrinsics_path \
 --guidance_path $guidance_path \
 --output_path $output_path \
 --eval_output_path $eval_output_path \

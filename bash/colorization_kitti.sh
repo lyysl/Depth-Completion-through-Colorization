@@ -8,14 +8,16 @@ use_gpu=True # True, False
 winRad=1 # 1,2...
 kernel=cross # cross, full
 
-input_path='./data/data_depth_selection/depth_selection/val_selection_cropped/velodyne_raw'
-ground_truth_path='./data/data_depth_selection/depth_selection/val_selection_cropped/groundtruth_depth'
+input_path='./data/kitti/data_depth_selection/depth_selection/val_selection_cropped/velodyne_raw'
+intrinsics_path='./data/kitti/data_depth_selection/depth_selection/val_selection_cropped/intrinsics'
+ground_truth_path='./data/kitti/data_depth_selection/depth_selection/val_selection_cropped/groundtruth_depth'
 output_path='./results/kitti/'${data}'/'${kernel}
 eval_output_path='./eval_results/kitti/'${data}'/'${kernel}
 
 echo "generating results for colorization method..."
 python3 ./src/colorization_kitti.py \
 --input_path $input_path \
+--intrinsics_path $intrinsics_path \
 --output_path $output_path \
 --eval_output_path $eval_output_path \
 --use_gpu $use_gpu \

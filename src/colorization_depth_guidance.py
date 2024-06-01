@@ -7,12 +7,14 @@ import time
 import argparse
 from log_utils import log
 import cv2
-
+from outlier_removal_kitti import *
 
 parser = argparse.ArgumentParser()
 
 parser.add_argument('--input_path',
     type=str, required=True, help='Which solid state lidar data is used')
+parser.add_argument('--intrinsics_path',
+    type=str, required=True, help='Path for the intrinsics parameters')
 parser.add_argument('--guidance_path',
     type=str, required=True, help='guidance image data')
 parser.add_argument('--output_path',
@@ -29,6 +31,7 @@ parser.add_argument('--kernel',
 args = parser.parse_args()
 
 sparse_path = args.input_path
+intrinsics_path = args.intrinsics_path
 guidance_path = args.guidance_path
 output_folder = args.output_path
 eval_output_path = args.eval_output_path
@@ -43,8 +46,11 @@ kernel = args.kernel
 def get_imlist(path):
     return [os.path.join(path, f) for f in os.listdir(path) if f.endswith('.png')]
 
+def get_imlist_txt(path):
+    return [os.path.join(path, f) for f in os.listdir(path) if f.endswith('.txt')]
 
 sparse_list = get_imlist(sparse_path)
+intrinsics_list = get_imlist_txt(intrinsics_path)
 guidance_list = get_imlist(guidance_path)
 if not os.path.exists(output_folder):
     os.makedirs(output_folder)
@@ -302,12 +308,21 @@ num_sample = len(sparse_list)
 time_elapse = 0
 
 for i in range(len(sparse_list)):
+    sparse = sparse_list[i]
+    intrinsic = intrinsics_list[i]
     output_name = os.path.basename(sparse_list[i]).split('/')[-1]
     output_path = os.path.join(output_folder, output_name)
-    sparse = depth_read(sparse_list[i])
+    sparse = depth_read(sparse)
     image_guidance = depth_read(guidance_list[i])
 
     guidance_weight = compute_weights(image_guidance, kernel)
+
+    # preprocess sparse input to remove outlier
+    lidar,intrinsic= read_one(sparse, intrinsic)  
+    outpier_mask=outlier_removal_mask(lidar, intrinsic, line_num=64, height_offset=100)
+    lidar_new=(1.0-outpier_mask)*lidar
+    lidar_new = np.squeeze(lidar_new, axis=0)
+    sparse = np.round((lidar_new / 255) * 65535).astype(np.uint16)
 
     if len(sparse.shape) == 3:
         sparse = sparse[:, :, 0]
